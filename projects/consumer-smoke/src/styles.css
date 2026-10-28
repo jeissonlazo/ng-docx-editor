@@ -1,0 +1,17 @@
+/*
+ * The documented consumer import: the PACKAGE specifier, resolved through the published
+ * `exports` map — not a relative path into this repository. If `styles.css` or its `@import`
+ * of the engine sheet were missing from the tarball, this build fails.
+ */
+@import 'ng-docx-editor/styles.css';
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+smoke-root {
+  display: block;
+  height: 100%;
+}

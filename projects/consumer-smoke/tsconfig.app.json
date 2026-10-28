@@ -1,0 +1,12 @@
+/* The consumer smoke test resolves `ng-docx-editor` from node_modules (the packed tarball),
+   so it must NOT inherit the workspace's source-path alias. */
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../out-tsc/consumer",
+    "types": [],
+    "paths": {}
+  },
+  "files": ["src/main.ts"],
+  "include": ["src/**/*.d.ts"]
+}

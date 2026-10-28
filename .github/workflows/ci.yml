@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# One workflow, three guarantees that fail independently:
+#   unit          — the store, the chrome projection and the i18n layer behave
+#   browser       — a real Chrome paints, edits, formats and re-composes a real DOCX
+#   distribution  — the PACKED tarball installs into a clean Angular app and renders there
+#
+# The third is the one a source-path demo cannot give: it is what catches a broken `exports`
+# map, a missing stylesheet or a declaration that stops compiling before `npm publish` does.
+
+env:
+  CI: true
+  NG_CLI_ANALYTICS: false
+
+jobs:
+  unit:
+    name: Build, typecheck and unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run typecheck
+      - run: npm run build
+      - run: npm test
+
+  browser:
+    name: Browser verification (Chrome)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+      # The runner image ships Google Chrome; the helper resolves it, and DOCX_CHROME_PATH
+      # can point anywhere else.
+      - run: npm run build:demo
+      - run: node scripts/verify.mjs
+        env:
+          DOCX_CHROME_PATH: /usr/bin/google-chrome
+      - name: Upload verification report and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification
+          path: |
+            docs/verification.json
+            docs/screenshots/*.png
+          if-no-files-found: warn
+
+  distribution:
+    name: Packed tarball installs in a clean app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run check:consumer
+        env:
+          DOCX_CHROME_PATH: /usr/bin/google-chrome
+      - name: Upload consumer report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: consumer-report
+          path: .cache/consumer-report.json
+          if-no-files-found: warn

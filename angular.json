@@ -32,6 +32,52 @@
         }
       }
     },
+    "consumer-smoke": {
+      "projectType": "application",
+      "root": "projects/consumer-smoke",
+      "sourceRoot": "projects/consumer-smoke/src",
+      "prefix": "smoke",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/consumer-smoke/src/main.ts",
+            "tsConfig": "projects/consumer-smoke/tsconfig.app.json",
+            "assets": [
+              { "glob": "sample.docx", "input": "projects/demo/public", "output": "." },
+              { "glob": "favicon.ico", "input": "projects/demo/public", "output": "." },
+              {
+                "glob": "harfbuzz.wasm",
+                "input": "node_modules/@docx-editor.dev/core/dist",
+                "output": "."
+              },
+              {
+                "glob": "*.ttf",
+                "input": "node_modules/@docx-editor.dev/fonts/assets",
+                "output": "assets"
+              }
+            ],
+            "styles": ["projects/consumer-smoke/src/styles.css"],
+            "allowedCommonJsDependencies": ["utif2", "pako"]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                { "type": "initial", "maximumWarning": "5MB", "maximumError": "8MB" },
+                { "type": "anyComponentStyle", "maximumWarning": "40kB", "maximumError": "80kB" }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        }
+      }
+    },
     "demo": {
       "projectType": "application",
       "schematics": {

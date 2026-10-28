@@ -379,8 +379,19 @@ collapsing (the bar wraps instead). [`docs/parity.md`](docs/parity.md) has the i
 
 ## Status and roadmap
 
-Working, verified in Chrome against a real 30-page document: everything listed above.
-`docs/verification.json` is the machine-readable result of the last run (`22/22` checks).
+Working, and verified rather than asserted:
+
+| Guarantee | Evidence |
+| --- | --- |
+| Library compiles, types are complete | `npm run typecheck` + `npm run build` |
+| Behaviour of the store, i18n, zoom, registry, toolbar | `npm test` — 36 tests |
+| A real document paints, edits, formats, re-composes | `npm run verify` — 23 checks in Chrome, `docs/verification.json` |
+| The **packed tarball** installs and renders in a clean app | `npm run check:consumer` — 21 checks, `.cache/consumer-report.json` |
+
+What is verified in the browser (`docs/screenshots/`): 30 painted pages of a real DOCX, typing,
+bold, undo, the ref handle serializing a `.docx` download, the File menu, the zoom stepper, the
+headings pane jumping to a heading, a locale switch re-labelling the chrome, the dark chrome, and
+the provider-first composition rendering the same 24 controls from the same store.
 
 Next, in the order that buys the most parity per unit of work:
 
@@ -395,18 +406,40 @@ Next, in the order that buys the most parity per unit of work:
 
 ```bash
 npm install
+npm run typecheck      # tsc over the library, noUnusedLocals included
 npm run build          # builds the library into dist/ng-docx-editor
 npm test               # 36 unit tests (vitest + jsdom)
 npm run build:demo     # builds the demo app
 npm start              # serves the demo on http://localhost:4200
 npm run verify         # builds the demo, serves it, drives Chrome, writes docs/verification.json
+npm run check:consumer # packs, installs the tarball in a clean app, builds and renders it
+npm run ci             # the whole chain CI runs
 ```
 
 The verification script (`scripts/verify-demo.mjs`) uses `playwright-core` with the locally
-installed Chrome — no browser download. It types into the document, bolds a selection, undoes,
-opens the File menu, changes zoom, opens the outline and jumps to a heading, switches language
-and colour mode, then re-renders the same document through the provider-first composition and
-asserts the chrome is identical while checking that nothing 404s and nothing logs an error.
+installed Chrome — no browser download, and `DOCX_CHROME_PATH` overrides the lookup on CI. It
+types into the document, bolds a selection, undoes, opens the File menu, changes zoom, opens the
+outline and jumps to a heading, switches language and colour mode, then re-renders the same
+document through the provider-first composition and asserts the chrome is identical while
+checking that nothing 404s and nothing logs an error.
+
+### Distribution check
+
+`npm run check:consumer` is the guard the demo cannot provide. The demo compiles the library
+from **source**, so it would not notice a broken `exports` map, a stylesheet left out of the
+tarball, or a declaration that stops compiling. That script:
+
+1. `npm pack`s the built package and asserts every `exports` target is actually inside the
+   tarball (plus `styles.css` still re-exporting the engine sheet, and the peer dependencies);
+2. installs the tarball with `npm install --no-save` and resolves it through Node's exports map;
+3. builds [`projects/consumer-smoke`](projects/consumer-smoke), a one-component Angular app that
+   imports only `ng-docx-editor` and `@import 'ng-docx-editor/styles.css'`;
+4. renders it in Chrome and asserts pages paint, the toolbar renders, the packaged stylesheet is
+   applied (`rgb(241, 245, 249)` on the bar, not `transparent`), nothing 404s and nothing logs.
+
+`.github/workflows/ci.yml` runs three independent jobs — unit, browser, distribution — and
+uploads `docs/verification.json`, the screenshots and `.cache/consumer-report.json` as
+artifacts. A red run therefore says which guarantee broke, not just that something did.
 
 Repository layout:
 
@@ -417,7 +450,11 @@ projects/
     src/lib/components/  editor, viewport, content, toolbar, menu, outline, shared
     styles/styles.css    the public stylesheet (engine sheet + nothing)
   demo/                  the demo application (both composition modes)
-scripts/                 build/serve/verify tooling
+  consumer-smoke/        the packaged-tarball consumer (distribution check)
+scripts/
+  lib/                   Chrome resolution, static serving
+  check-consumer-install.mjs
+  verify.mjs, verify-demo.mjs, serve-demo.mjs
 docs/                    parity notes, verification report, screenshots
 ```
 

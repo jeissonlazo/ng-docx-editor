@@ -22,7 +22,9 @@
     "format": "prettier --write \"projects/**/*.{ts,html,css,json,md}\" \"*.{json,md}\" \"docs/*.md\"",
     "verify": "npm run build:demo && node scripts/verify.mjs",
     "verify:serve": "node scripts/serve-demo.mjs dist/demo/browser 4312",
-    "verify:run": "node scripts/verify-demo.mjs http://127.0.0.1:4312/"
+    "verify:run": "node scripts/verify-demo.mjs http://127.0.0.1:4312/",
+    "check:consumer": "npm run build && node scripts/check-consumer-install.mjs",
+    "ci": "npm run typecheck && npm run build && npm test && npm run build:demo && node scripts/verify.mjs && node scripts/check-consumer-install.mjs"
   },
   "dependencies": {
     "@angular/common": "^22.1.0",

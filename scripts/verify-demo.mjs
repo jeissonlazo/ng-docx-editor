@@ -6,11 +6,14 @@
 // composition — and writes screenshots plus docs/verification.json.
 //
 // Usage: node scripts/verify-demo.mjs [url]
-import { chromium } from 'playwright-core';
+//
+// The browser is the machine's own Chrome (DOCX_CHROME_PATH overrides the lookup), so the suite
+// runs on Windows and on a Linux CI image without downloading a browser.
 import { mkdir, writeFile } from 'node:fs/promises';
+import { launchChrome, resolveChrome } from './lib/chrome.mjs';
 
 const url = process.argv[2] ?? 'http://127.0.0.1:4312/';
-const executablePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+const executablePath = resolveChrome();
 
 const results = [];
 const consoleErrors = [];
@@ -23,11 +26,7 @@ function record(name, ok, detail = '') {
   console.log(`${ok ? 'PASS' : 'FAIL'}  ${name}${detail ? ` — ${detail}` : ''}`);
 }
 
-const browser = await chromium.launch({
-  executablePath,
-  headless: true,
-  args: ['--no-sandbox', '--disable-gpu'],
-});
+const browser = await launchChrome();
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 page.on('console', (message) => {
   if (message.type() === 'error') consoleErrors.push(message.text());
@@ -190,6 +189,7 @@ try {
   await mkdir('docs/screenshots', { recursive: true });
   const report = {
     url,
+    browser: executablePath,
     when: new Date().toISOString(),
     failures,
     results,
