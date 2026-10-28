@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { formattingBarChromeGroups } from '@docx-editor.dev/core/editor';
 import type { ChromeControl, ChromeGroup, ChromeSlotId } from '@docx-editor.dev/core/editor';
 import { DocxEditorStore } from '../../core/docx-editor-store';
@@ -95,9 +95,6 @@ export class DocxToolbarComponent {
   private readonly store = inject(DocxEditorStore);
 
   readonly t = this.store.t;
-
-  /** Extra controls the host wants in the bar, by slot id. */
-  readonly extraSlots = input<readonly ChromeSlotId[]>([]);
 
   readonly groups = computed<readonly ChromeGroup[]>(() =>
     formattingBarChromeGroups(this.store.snapshot().image, { direction: true })

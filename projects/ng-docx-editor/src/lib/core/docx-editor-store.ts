@@ -32,7 +32,7 @@ import { DOCX_EDITOR_DIR, DOCX_EDITOR_I18N } from './tokens';
 import { createDocxI18n, DEFAULT_DOCX_I18N, type DocxI18n } from './i18n';
 import { deferredTick } from './deferred-notifier';
 import { sameDeclaredZoomMode, stepZoomLevel, zoomLevelForShortcut } from './zoom';
-import type { DocxEditorOptions, DocxEditorRef, EditorMode } from './types';
+import type { DocxEditorOptions, DocxEditorRef } from './types';
 
 const DOCX_MIME = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
@@ -84,7 +84,6 @@ export class DocxEditorStore implements DocxEditorRef {
   private unsubscribes: (() => void)[] = [];
   private appliedZoom: number | undefined;
   private appliedZoomMode: ZoomMode | 'auto' | undefined;
-  private appliedMode: EditorMode | undefined;
   private applyingMarkup = false;
   private readyFired = false;
   private destroyed = false;
@@ -191,7 +190,6 @@ export class DocxEditorStore implements DocxEditorRef {
     if (previous.locale !== next.locale) instance.setLocale(next.locale);
     if (previous.mode !== next.mode) {
       instance.setMode(next.mode);
-      this.appliedMode = next.mode;
     }
     if (previous.revisionMarkup !== next.revisionMarkup && next.revisionMarkup !== undefined) {
       this.applyRevisionMarkup(next.revisionMarkup);
@@ -276,7 +274,6 @@ export class DocxEditorStore implements DocxEditorRef {
     }
     this.appliedZoom = options.zoom;
     this.appliedZoomMode = options.zoomMode;
-    this.appliedMode = options.mode;
     this.readyFired = false;
     this.instanceSignal.set(instance);
     this.subscribe(instance);

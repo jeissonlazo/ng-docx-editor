@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 /**
  * One Material Symbols glyph, rendered as inline SVG from the engine registry's path data.
@@ -40,6 +40,4 @@ export class DocxIconComponent {
   readonly paths = input<readonly string[] | null>(null);
   /** Rendered box in pixels. */
   readonly size = input(18);
-
-  readonly hasPaths = computed(() => (this.paths()?.length ?? 0) > 0);
 }
