@@ -441,6 +441,12 @@ tarball, or a declaration that stops compiling. That script:
 uploads `docs/verification.json`, the screenshots and `.cache/consumer-report.json` as
 artifacts. A red run therefore says which guarantee broke, not just that something did.
 
+> **npm 11 gate.** npm 11 refuses to run install scripts that are not approved, and in CI that
+> fails closed — `npm ci` dies before a single job step. The four build tools this workspace
+> needs are approved by name in `package.json` under `allowScripts` (`esbuild`,
+> `@parcel/watcher`, `lmdb`, `msgpackr-extract`). Name-only entries survive a version bump;
+> `npm approve-scripts --allow-scripts-pin` would pin them and go stale.
+
 Repository layout:
 
 ```
