@@ -1,0 +1,40 @@
+ng-docx-editor
+Copyright 2026 Jeisson Lazo
+
+This product is an Angular adapter for the @docx-editor.dev engine and is a
+derivative work of docx-editor:
+
+    docx-editor
+    Copyright 2026 EigenPal Inc.
+    https://github.com/eigenpal/docx-editor
+    Licensed under the Apache License, Version 2.0.
+
+The following parts of this repository are derived from that project, in whole
+or in part:
+
+  - projects/ng-docx-editor/src/lib/core/deferred-notifier.ts
+    Ported from packages/react/src/editor/deferred-notifier.ts. The scheduling
+    policy (coalescing, microtask flush, yield to a task under input pressure)
+    is part of the engine's behaviour contract and is reproduced deliberately.
+
+  - projects/ng-docx-editor/src/lib/components/toolbar/*
+  - projects/ng-docx-editor/src/lib/components/menu/*
+  - projects/ng-docx-editor/src/lib/core/chrome-registry.ts
+  - projects/ng-docx-editor/src/lib/core/labels.ts
+  - projects/ng-docx-editor/src/lib/core/zoom.ts
+    The Angular chrome is a port of the React adapter's chrome. Control
+    arrangement, labels, icons, enabled-state rules, zoom ladder and colour
+    palettes follow that implementation, translated to Angular templates and
+    signals, and driven by the shared chrome registry in @docx-editor.dev/core.
+
+  - projects/demo/public/sample.docx
+    The sample document shipped with the upstream examples (Apache-2.0).
+
+The engine itself (@docx-editor.dev/core, @docx-editor.dev/i18n,
+@docx-editor.dev/fonts) is consumed as a published npm dependency and is not
+vendored here. Its license is Apache-2.0 and its own notices travel with the
+package.
+
+This repository ships no code from packages/editor-api/, packages/pro/,
+packages/docx-to-pdf/ or packages/telemetry/, which are governed by the
+EigenPal Pro Evaluation License 1.0 upstream.

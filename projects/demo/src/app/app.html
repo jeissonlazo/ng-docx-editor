@@ -1,0 +1,70 @@
+<div class="app">
+  <header class="app-bar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">▤</span>
+      <span class="brand-name">ng-docx-editor</span>
+      <span class="brand-tag">Angular adapter · engine 2.33</span>
+    </div>
+
+    <nav class="app-actions">
+      <button type="button" (click)="newDocument()">New</button>
+      <label class="file-button">
+        Open
+        <input type="file" accept=".docx" hidden (change)="open($event)" />
+      </label>
+      <button type="button" (click)="save()">Save</button>
+      <button type="button" (click)="loadSample()">Sample</button>
+      <span class="divider" aria-hidden="true"></span>
+      <button type="button" title="Undo" aria-label="Undo" (click)="undo()">↶</button>
+      <button type="button" title="Redo" aria-label="Redo" (click)="redo()">↷</button>
+      <span class="divider" aria-hidden="true"></span>
+      <button type="button" (click)="cycleColorMode()">Theme: {{ colorMode() }}</button>
+      <select
+        class="locale-select"
+        aria-label="Interface language"
+        [value]="locale()"
+        (change)="locale.set($any($event.target).value)"
+      >
+        @for (id of localeIds; track id) {
+          <option [value]="id">{{ localeLabels[id] }}</option>
+        }
+      </select>
+      <label class="toggle">
+        <input
+          type="checkbox"
+          [checked]="composed()"
+          (change)="composed.set($any($event.target).checked)"
+        />
+        <span>Provider-first</span>
+      </label>
+    </nav>
+  </header>
+
+  <main class="app-main">
+    @if (composed()) {
+      <demo-composed-editor [document]="document()" [fonts]="fonts()" />
+    } @else {
+      <docx-editor
+        [document]="document()"
+        [fonts]="fonts()"
+        [title]="title()"
+        [i18n]="i18n()"
+        [colorMode]="colorMode()"
+        (change)="onChange($event)"
+        (ready)="onReady()"
+      />
+    }
+  </main>
+
+  <footer class="app-status">
+    <span class="status-name">{{ title() }}</span>
+    <span>{{ pages() }} page(s)</span>
+    <span>revision {{ revision() }}</span>
+    <span class="status-state" [class.status-dirty]="dirty()">
+      {{ dirty() ? 'Unsaved changes' : 'Saved' }}
+    </span>
+    @if (busy()) {
+      <span class="status-busy">loading…</span>
+    }
+  </footer>
+</div>

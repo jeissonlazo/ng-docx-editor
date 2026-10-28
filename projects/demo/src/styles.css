@@ -1,0 +1,24 @@
+/*
+ * The editor's chrome is styled by the engine's own stylesheet, imported once here for the
+ * whole app. See `projects/ng-docx-editor/styles/styles.css` — the adapter adds no rules of
+ * its own to that sheet, which is what keeps the Angular chrome identical to React's and
+ * Vue's.
+ */
+@import '../../ng-docx-editor/styles/styles.css';
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+app-root {
+  display: block;
+  height: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

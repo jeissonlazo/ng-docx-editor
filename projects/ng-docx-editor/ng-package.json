@@ -1,0 +1,9 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/ng-docx-editor",
+  "lib": {
+    "entryFile": "src/public-api.ts"
+  },
+  "assets": [{ "input": "styles", "glob": "*.css", "output": "." }],
+  "allowedNonPeerDependencies": []
+}

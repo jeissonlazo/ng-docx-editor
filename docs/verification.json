@@ -1,0 +1,124 @@
+{
+  "url": "http://127.0.0.1:4312/",
+  "when": "2026-10-28T00:35:40.718Z",
+  "failures": 0,
+  "results": [
+    {
+      "name": "engine paints pages",
+      "ok": true,
+      "detail": "3 pages"
+    },
+    {
+      "name": "document text is painted",
+      "ok": true,
+      "detail": "4000 chars"
+    },
+    {
+      "name": "toolbar renders the bold slot",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "bold is enabled for an editable document",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "toolbar exposes registry slots",
+      "ok": true,
+      "detail": "24 slots"
+    },
+    {
+      "name": "typing reaches the document",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "bold becomes active after the click",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "undo repaints the document",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "undo reverts the typed edit",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "the ref handle serializes a .docx download",
+      "ok": true,
+      "detail": "sample.docx"
+    },
+    {
+      "name": "menu bar renders File",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "File menu lists rows",
+      "ok": true,
+      "detail": "6 rows"
+    },
+    {
+      "name": "File › Save is available",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "zoom stepper changes the scale",
+      "ok": true,
+      "detail": "100% -> 75%"
+    },
+    {
+      "name": "outline pane lists headings",
+      "ok": true,
+      "detail": "75 headings"
+    },
+    {
+      "name": "outline row scrolls the document",
+      "ok": true,
+      "detail": "scrollTop=3492"
+    },
+    {
+      "name": "locale switch re-labels the chrome",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "colour mode applies the dark chrome class",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "provider-first composition paints pages",
+      "ok": true,
+      "detail": "3 pages"
+    },
+    {
+      "name": "provider-first composition renders the toolbar",
+      "ok": true,
+      "detail": "24 controls"
+    },
+    {
+      "name": "provider-first composition renders the menu bar",
+      "ok": true,
+      "detail": "5 menus"
+    },
+    {
+      "name": "no failed requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no console errors",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "consoleErrors": [],
+  "failedRequests": []
+}

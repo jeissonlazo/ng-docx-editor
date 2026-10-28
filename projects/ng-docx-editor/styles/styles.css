@@ -1,0 +1,11 @@
+/**
+ * ng-docx-editor — the adapter's public stylesheet.
+ *
+ * The editor's visual design lives in ONE place: the engine's stylesheet, which is the same
+ * source of truth the React and Vue adapters load. This entry adds nothing but the import, so
+ * a host gets the identical toolbar, menu bar, dialogs, page and ruler geometry in Angular.
+ *
+ * Load it once, globally — the chrome paints class names outside any component's view, and a
+ * global sheet is what lets a host override any rule with a plain selector.
+ */
+@import '@docx-editor.dev/core/styles/editor.css';

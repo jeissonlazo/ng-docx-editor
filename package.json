@@ -1,0 +1,50 @@
+{
+  "name": "ng-docx-editor-workspace",
+  "version": "0.1.0",
+  "description": "Angular DOCX editor — the Angular adapter for the @docx-editor.dev engine.",
+  "private": true,
+  "packageManager": "npm@11.17.0",
+  "license": "Apache-2.0",
+  "author": "Jeisson Lazo",
+  "homepage": "https://github.com/jeissonlazo/ng-docx-editor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeissonlazo/ng-docx-editor.git"
+  },
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve demo",
+    "build": "ng build ng-docx-editor",
+    "build:demo": "ng build demo",
+    "watch": "ng build ng-docx-editor --watch --configuration development",
+    "test": "ng test ng-docx-editor --watch=false",
+    "typecheck": "tsc -p projects/ng-docx-editor/tsconfig.lib.json --noEmit",
+    "format": "prettier --write \"projects/**/*.{ts,html,css,json,md}\" \"*.{json,md}\" \"docs/*.md\"",
+    "verify": "npm run build:demo && node scripts/verify.mjs",
+    "verify:serve": "node scripts/serve-demo.mjs dist/demo/browser 4312",
+    "verify:run": "node scripts/verify-demo.mjs http://127.0.0.1:4312/"
+  },
+  "dependencies": {
+    "@angular/common": "^22.1.0",
+    "@angular/compiler": "^22.1.0",
+    "@angular/core": "^22.1.0",
+    "@angular/platform-browser": "^22.1.0",
+    "@angular/router": "^22.1.0",
+    "@docx-editor.dev/core": "2.33.0",
+    "@docx-editor.dev/fonts": "2.33.0",
+    "@docx-editor.dev/i18n": "2.33.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^22.1.0",
+    "@angular/cli": "^22.1.5",
+    "@angular/compiler-cli": "^22.1.0",
+    "jsdom": "^26.1.0",
+    "ng-packagr": "^22.2.5",
+    "playwright-core": "^1.64.1",
+    "prettier": "^3.8.1",
+    "typescript": "~6.0.2",
+    "vitest": "^3.2.4"
+  }
+}
